@@ -122,10 +122,13 @@
         {% endif %}
       </section>
       {% if api_response.posts._meta.max_results < api_response.posts._meta.total %}
-        <button data-load-more class="lb-button load-more-posts">
-            {{ translate("Load more posts") }}
-        </button>
+        {% if not settings.infinitScroll %}
+          <button data-load-more class="lb-button load-more-posts">
+              {{ translate("Load more posts") }}
+          </button>
+        {% endif %}
       {% endif %}
+      <input type="hidden" name="infinitScroll" id="infinitScroll" value="{{settings.infinitScroll}}">
   </div>
   <!-- Timeline End -->
 

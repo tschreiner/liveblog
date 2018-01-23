@@ -150,6 +150,23 @@ function checkForScroll() {
       }
     });
 }
+let infinitScroll = document.querySelector('#infinitScroll').value;
+
+if(infinitScroll=="True"){
+  window.addEventListener("scroll", Isstartscroll);
+}
+
+function Isstartscroll(){
+  var doc = document.documentElement;
+  var offset = doc.scrollTop + window.innerHeight;
+  var height = doc.offsetHeight;
+  if (offset === height) {
+    viewmodel.loadPostsPage()
+      .then(view.renderPosts)
+      .then(view.displayNewPosts)
+      .catch(catchError);
+  }
+}
 
 function loadForScroll() {
   if (!view.permalinkScroll()) {
