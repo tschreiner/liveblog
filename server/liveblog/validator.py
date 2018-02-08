@@ -7,6 +7,7 @@ from flask import current_app as app
 from liveblog.syndication.exceptions import APIConnectionError
 from liveblog.syndication.utils import send_api_request, trailing_slash, validate_secure_url
 from superdesk.validator import SuperdeskValidator
+from tidylib import tidy_fragment
 
 
 class LiveblogValidator(SuperdeskValidator):
@@ -31,6 +32,15 @@ class LiveblogValidator(SuperdeskValidator):
                 vars = re.findall('\$(\w+)', value)
                 if not len(vars):
                     return self._error(field, "The provided HTML template is not valid: no vars available.")
+
+    # HTML Tidy for Linux version 5.4.0
+    def _validate_htmlmarkup(self, htmlmarkup, field, value):
+        tidyoptions = {}
+        htmlFragment, errors = tidy_fragment(value, tidyoptions)
+        errors = errors.split('\n')
+        result = list(filter(None, errors))
+        if result:
+            return self._error(field, "The provided HTML markup is not valid")
 
     def _validate_uniqueurl(self, unique, field, value):
         value = trailing_slash(value)
