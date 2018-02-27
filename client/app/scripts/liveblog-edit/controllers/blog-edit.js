@@ -404,7 +404,7 @@ export default function BlogEditController(
                             } else {
                                 var data = _.extend(itm, itm.meta);
 
-                                self.editor.createBlock(itm.item_type, data);
+                                self.editor.createBlocks(itm.item_type, data);
                             }
                         }
                     });
