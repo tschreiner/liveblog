@@ -104,7 +104,7 @@ export default angular
 
                     angular.forEach(list, (block) => {
                         item = opts.transform.set(block);
-                        scope.editor.createBlocks(item.type, item.data);
+                        scope.editor.block_manager.createBlock(item.type, item.data);
                     });
                 };
 

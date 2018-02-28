@@ -404,7 +404,8 @@ export default function BlogEditController(
                             } else {
                                 var data = _.extend(itm, itm.meta);
 
-                                self.editor.createBlocks(itm.item_type, data);
+                                // self.editor.createBlock(itm.item_type, data);
+                                self.editor.block_manager.createBlock(itm.item_type, data);
                             }
                         }
                     });
@@ -558,7 +559,7 @@ export default function BlogEditController(
                         mimetype: 'image/jpeg'
                     },
                     headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                        'Content-Type': 'application/json;charset=utf-8',
                     }
                 })
                     .then((response) => {
