@@ -490,7 +490,7 @@ angular
             ].join('\n')
         };
 
-        SirTrevor.config.defaults.Block.uploadOptions = uploadOptions;
+        SirTrevor.config.defaults.Block.upload_options = uploadOptions;
         SirTrevor.Locales.en.general.upload = 'Select from folder';
 
         SirTrevor.Blocks.Image = imageBlock(SirTrevor, config);
