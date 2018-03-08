@@ -1,5 +1,6 @@
 var Login = require('./../node_modules/superdesk-core/spec/helpers/pages').login;
 var waitForSuperdesk = require('./../node_modules/superdesk-core/spec/helpers/utils').waitForSuperdesk;
+var EC = protractor.ExpectedConditions;
 
 describe('login', () => {
     var modal;
@@ -50,6 +51,7 @@ describe('login', () => {
         modal.login('foo', 'bar');
         expect(modal.btn.isDisplayed()).toBe(true);
         expect(browser.getCurrentUrl()).not.toBe(browser.baseUrl + '/#/liveblog');
+        browser.wait(EC.visibilityOf(modal.error), 10000, 'Element taking too long to appear in the DOM');
         expect(modal.error.isDisplayed()).toBe(true);
     });
 });
