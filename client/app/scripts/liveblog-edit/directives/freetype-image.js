@@ -37,6 +37,7 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
             $scope.$watch('preview.img', (newValue, oldValue, scope) => {
                 if (newValue !== undefined || newValue !== oldValue) {
                     self.saveImage();
+                    $scope.validation.imageUploaded = true;
                 }
             });
 
@@ -73,7 +74,6 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
                         );
                     }, (progress) => {
                         $scope.progress.width = Math.round(progress.loaded / progress.total * 100.0);
-                        $scope.validation.imageUploaded = true;
                     }));
             };
 
