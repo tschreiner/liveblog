@@ -107,11 +107,11 @@ angular
     .module('SirTrevorBlocks', [])
     .config(['SirTrevorProvider', 'config', function(SirTrevor, config) {
         // replace the plus symbol with text description
-        // SirTrevor.FloatingBlockControls.prototype.attributes = function() {
-        //     return {
-        //         'data-icon': 'ADD CONTENT HERE'
-        //     };
-        // };
+        SirTrevor.FloatingBlockControls.prototype.attributes = function() {
+            return {
+                'data-icon': 'ADD CONTENT HERE'
+            };
+        };
 
         SirTrevor.Block.prototype.attributes = function() {
             return _.extend(SirTrevor.SimpleBlock.fn.attributes.call(this), {
@@ -575,42 +575,46 @@ angular
             placeCaretAtEnd(input.get(0));
         }, 0);
 
-        // SirTrevor.Blocks.Comment = SirTrevor.Block.extend({
-        //     type: "comment",
 
-        //     title: function() { return window.i18n.t('blocks:comment:title'); },
+        SirTrevor.Blocks.Comment = SirTrevor.Block.extend({
+            type: 'comment',
 
-        //     editorHTML: '<div class="st-required st-text-block"></div>',
+            title: function() {
+                return window.i18n.t('blocks:comment:title');
+            },
 
-        //     icon_name: 'comment',
+            editorHTML: '<div class="st-required st-text-block"></div>',
 
-        //     loadData: function(data) {
-        //         this.getTextBlock().html(SirTrevor.toHTML(data.text, this.type));
-        //     },
-        //     isEmpty: function() {
-        //         return _.isEmpty(this.getData().text);
-        //     },
-        //     retrieveData: function() {
-        //         return {
-        //             text: this.$('.st-text-block').text() || undefined,
-        //         };
-        //     },
-        //     toHTML: function(html) {
-        //         if (this.$el) {
-        //             return this.getTextBlock().html();
-        //         }
+            icon_name: 'comment',
 
-        //         return html;
-        //     },
-        //     toMeta: function() {
-        //         var data = this.getData();
-        //         return {
-        //             text: data.text,
-        //             commenter: data.commenter,
-        //             _created: data._created
-        //         }
-        //     }
-        // });
+            loadData: function(data) {
+                this.getTextBlock().html(SirTrevor.toHTML(data.text, this.type));
+            },
+            isEmpty: function() {
+                return _.isEmpty(this.getData().text);
+            },
+            retrieveData: function() {
+                return {
+                    text: this.$('.st-text-block').text() || undefined,
+                };
+            },
+            toHTML: function(html) {
+                if (this.$el) {
+                    return this.getTextBlock().html();
+                }
+
+                return html;
+            },
+            toMeta: function() {
+                var data = this.getData();
+
+                return {
+                    text: data.text,
+                    commenter: data.commenter,
+                    _created: data._created
+                };
+            }
+        });
         // var Strikethrough = SirTrevor.Formatter.extend({
         //     title: 'strikethrough',
         //     iconName: 'strikethrough',

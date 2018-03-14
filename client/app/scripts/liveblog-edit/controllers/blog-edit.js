@@ -172,7 +172,7 @@ export default function BlogEditController(
             return true;
         }
 
-        var areallBlocksempty = _.every(self.editor.blocks, (block) => block.isEmpty());
+        var areallBlocksempty = _.every(self.editor.block_manager.blocks, (block) => block.isEmpty());
 
         return areallBlocksempty || !$scope.isCurrentPostUnsaved();
     }
@@ -393,6 +393,7 @@ export default function BlogEditController(
                 $timeout(() => {
                     var items = post.groups[1].refs;
 
+                    self.editor.clear();
                     items.forEach((item) => {
                         var itm = item;
 

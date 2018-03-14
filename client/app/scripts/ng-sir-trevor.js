@@ -54,38 +54,98 @@ export default angular
                 params: '=stParams'
             },
             link: function(scope, element, attrs) {
-                // Set Default toolbars
-                SirTrevor.Blocks.Heading.prototype.toolbarEnabled = true;
-                SirTrevor.Blocks.Quote.prototype.toolbarEnabled = true;
-                SirTrevor.Blocks.Text.prototype.toolbarEnabled = true;
-
                 var opts = angular.copy(options);
 
                 angular.extend(opts, scope.params);
                 opts.el = $(element.find('textarea'));
-                opts.textFormatting = {
-                    bold: true,
-                    italic: true,
-                    underline: true,
-                    strikethrough: true,
-                    link: true,
-                    h1: true,
-                    h2: true,
-                    list: true,
-                    blockquote: true,
-                    configure: function(scribe, scribeConfiguration) {
-                        scribeConfiguration.formatBarCommands.push({
-                            name: 'Superscript',
-                            cmd: 'superscript',
-                            text: '^',
-                            title: 'superscript'
-                        });
-                        scribeConfiguration.sanitize.sup = {};
-                        scribeConfiguration.shortcuts.superscript = function(event) {
-                            return (event.metaKey || event.ctrlKey) && event.keyCode === 80; // p
-                        };
-                    }
-                };
+                // opts.textFormatting = {
+                //     bold: true,
+                //     italic: true,
+                //     underline: true,
+                //     strikethrough: true,
+                //     link: true,
+                //     h1: true,
+                //     h2: true,
+                //     list: true,
+                //     blockquote: true,
+                //     configure: function(scribe, scribeConfiguration) {
+                //         scribeConfiguration.formatBarCommands.push({
+                //             name: 'Superscript',
+                //             cmd: 'superscript',
+                //             text: '^',
+                //             title: 'superscript'
+                //         });
+                //         scribeConfiguration.sanitize.sup = {};
+                //         scribeConfiguration.shortcuts.superscript = function(event) {
+                //             return (event.metaKey || event.ctrlKey) && event.keyCode === 80; // p
+                //         };
+                //     }
+                // };
+                // opts.formatBar = {
+                //     commands: [
+                //         {
+                //             name: "Bold",
+                //             title: "bold",
+                //             cmd: "bold",
+                //             keyCode: 66,
+                //             text: "B"
+                //         },
+                //         {
+                //             name: "Italic",
+                //             title: "italic",
+                //             cmd: "italic",
+                //             keyCode: 73,
+                //             text: "i"
+                //         },
+                //         {
+                //             name: "Underline",
+                //             title: "underline",
+                //             cmd: "underline",
+                //             text: "U"
+                //         },
+                //         {
+                //             name: "StrikeThrough",
+                //             title: "strikethrough",
+                //             cmd: "strikeThrough",
+                //             text: "S"
+                //         },
+                //         {
+                //             name: "Link",
+                //             title: "link",
+                //             iconName: "link",
+                //             cmd: "linkPrompt",
+                //             text: "link"
+                //         },
+                //         {
+                //             name: "Unlink",
+                //             title: "unlink",
+                //             iconName: "link",
+                //             cmd: "unlink",
+                //             text: "link"
+                //         },
+                //         {
+                //             name: "Alignleft",
+                //             title: "align-left",
+                //             iconName: "left-align",
+                //             cmd: "alignleft",
+                //             text: "Left"
+                //           },
+                //           {
+                //             name: "Aligncenter",
+                //             title: "align-center",
+                //             iconName: "center-align",
+                //             cmd: "aligncenter",
+                //             text: "Center"
+                //           },
+                //           {
+                //             name: "Alignright",
+                //             title: "align-right",
+                //             iconName: "right-align",
+                //             cmd: "alignright",
+                //             text: "Right"
+                //           },
+                //     ]
+                // };
                 scope.editor = new SirTrevor.Editor(opts);
                 scope.editor.get = function() {
                     var list = [];
@@ -94,7 +154,9 @@ export default angular
                     scope.editor.block_manager.blocks.sort((a, b) => a.$el.index() - b.$el.index());
                     angular.forEach(scope.editor.block_manager.blocks, (block) => {
                         // scope.editor.saveBlockStateToStore(block);
-                        scope.editor.store.addData(block);
+                        var blockData = block.getData();
+
+                        scope.editor.store.addData(blockData);
                         list.push(opts.transform.get(block));
                     });
                     return list;
