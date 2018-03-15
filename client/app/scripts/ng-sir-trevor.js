@@ -81,71 +81,86 @@ export default angular
                 //         };
                 //     }
                 // };
-                // opts.formatBar = {
-                //     commands: [
-                //         {
-                //             name: "Bold",
-                //             title: "bold",
-                //             cmd: "bold",
-                //             keyCode: 66,
-                //             text: "B"
-                //         },
-                //         {
-                //             name: "Italic",
-                //             title: "italic",
-                //             cmd: "italic",
-                //             keyCode: 73,
-                //             text: "i"
-                //         },
-                //         {
-                //             name: "Underline",
-                //             title: "underline",
-                //             cmd: "underline",
-                //             text: "U"
-                //         },
-                //         {
-                //             name: "StrikeThrough",
-                //             title: "strikethrough",
-                //             cmd: "strikeThrough",
-                //             text: "S"
-                //         },
-                //         {
-                //             name: "Link",
-                //             title: "link",
-                //             iconName: "link",
-                //             cmd: "linkPrompt",
-                //             text: "link"
-                //         },
-                //         {
-                //             name: "Unlink",
-                //             title: "unlink",
-                //             iconName: "link",
-                //             cmd: "unlink",
-                //             text: "link"
-                //         },
-                //         {
-                //             name: "Alignleft",
-                //             title: "align-left",
-                //             iconName: "left-align",
-                //             cmd: "alignleft",
-                //             text: "Left"
-                //           },
-                //           {
-                //             name: "Aligncenter",
-                //             title: "align-center",
-                //             iconName: "center-align",
-                //             cmd: "aligncenter",
-                //             text: "Center"
-                //           },
-                //           {
-                //             name: "Alignright",
-                //             title: "align-right",
-                //             iconName: "right-align",
-                //             cmd: "alignright",
-                //             text: "Right"
-                //           },
-                //     ]
-                // };
+                opts.formatBar = {
+                    commands: [
+                        {
+                            name: "Bold",
+                            title: "bold",
+                            cmd: "bold",
+                            keyCode: 66,
+                            text: "B"
+                        },
+                        {
+                            name: "Italic",
+                            title: "italic",
+                            cmd: "italic",
+                            keyCode: 73,
+                            text: "i"
+                        },
+                        {
+                            name: "Link",
+                            title: "link",
+                            iconName: "link",
+                            cmd: "linkPrompt",
+                            text: "link"
+                        },
+                        {
+                            name: "Unlink",
+                            title: "unlink",
+                            iconName: "link",
+                            cmd: "unlink",
+                            text: "link"
+                        },
+                        {
+                            name: "Strikethrough",
+                            title: 'strikethrough',
+                            iconName: 'strikethrough',
+                            cmd: 'strikeThrough',
+                            text: 'strike'
+                        },
+                        {
+                            name: "OrderedList",
+                            title: 'orderedlist',
+                            iconName: 'orderedlist',
+                            cmd: 'insertOrderedList',
+                            text: 'orderedlist'
+                        },
+                        {
+                            name: "UnorderedList",
+                            title: 'unorderedlist',
+                            iconName: 'unorderedlist',
+                            cmd: 'insertUnorderedList',
+                            text: 'unorderedlist'
+                        },
+                        {
+                            name: "RemoveFormat",
+                            title: 'removeformat',
+                            iconName: 'removeformat',
+                            cmd: 'removeformat',
+                            text: 'removeformat'
+                        },
+                        {
+                            name: "HeaderFour",
+                            title: 'h4',
+                            iconName: 'h4',
+                            cmd: 'h4',
+                            text: 'H4',
+                            onClick: () => {
+                                document.execCommand('formatBlock', false, '<h4>');
+                            }
+                        },
+                        {
+                            name: "HeaderFive",
+                            title: 'h5',
+                            iconName: 'h5',
+                            cmd: 'headerFive',
+                            text: 'H5',
+                            onClick: () => {
+                                document.execCommand('formatBlock', false, '<h5>');
+                            }
+                        }
+                    ]
+                };
                 scope.editor = new SirTrevor.Editor(opts);
                 scope.editor.get = function() {
                     var list = [];
