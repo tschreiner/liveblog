@@ -62,6 +62,11 @@
                     <span translate class="c">* Must contain at least one variable.<span><span>&nbsp;Do not use the DOCTYPE, BODY and HEAD tags.</span><span translate>&nbsp;All used tags must be closed.</span>
                     <a href="https://wiki.sourcefabric.org/x/jACMAw" target="_blank" translate>See the technical documentation for further details</a>
                     </div>
+                    <button type="button" class="btn btn-default pull-left" translate ng-click="amp=!amp">AMP Compatible-Code</button><br><br>
+                    <div class="sd-line-input" ng-if="amp">
+                        <label class="sd-line-input__label translate" translate>AMP Compatible Free Type Template</label>
+                        <textarea ng-model="self.dialogFreetype.ampTemplate" rows="15"></textarea>
+                    </div>
                 </fieldset>
             </div>
         </div>

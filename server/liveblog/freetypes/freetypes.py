@@ -9,6 +9,8 @@
 # at https://www.sourcefabric.org/superdesk/license
 from superdesk.resource import Resource
 from superdesk.services import BaseService
+from superdesk.errors import SuperdeskApiError
+import requests
 
 
 class FreetypesResource(Resource):
@@ -21,6 +23,9 @@ class FreetypesResource(Resource):
             'htmloutput': {
                 'template_vars_required': True
             }
+        },
+        'ampTemplate': {
+            'type': 'string',
         }
     }
     datasource = {
@@ -34,11 +39,22 @@ class FreetypesResource(Resource):
 
 
 class FreetypesService(BaseService):
+    def on_create(self, docs):
+        amp_template = docs[0].get('ampTemplate')
+        if amp_template:
+            response = requests.post(
+                'https://amp.cloudflare.com/q/', data=amp_template, headers={'content-type': 'text/plain'}, )
+            response_json = response.json()
+            is_valid = response_json['valid']
+            if not is_valid:
+                raise SuperdeskApiError.forbiddenError(response_json)
+
     def register_freetype_files(self, template, name):
         freetype = {
             'name': name,
-            'template': template
+            'template': template,
         }
+
         previous = self.find_one(req=None, name=name)
         if previous:
             self.replace(previous['_id'], freetype, previous)

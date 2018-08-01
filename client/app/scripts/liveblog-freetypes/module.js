@@ -1,9 +1,9 @@
 import listViewTpl from 'scripts/liveblog-freetypes/views/list.ng1';
 
-LiveblogFreetypesController.$inject = ['api', '$location', 'notify', 'gettext',
+LiveblogFreetypesController.$inject = ['api', '$location', '$http', 'notify', 'gettext',
     '$q', '$sce', 'config', 'lodash', 'upload', 'blogService', 'modal'];
 
-function LiveblogFreetypesController(api, $location, notify, gettext,
+function LiveblogFreetypesController(api, $location, $http, notify, gettext,
     $q, $sce, config, _, upload, blogService, modal) {
     const self = this;
 
@@ -49,6 +49,7 @@ function LiveblogFreetypesController(api, $location, notify, gettext,
             loading: false,
             name: '',
             template: '',
+            ampTemplate: '',
         },
         // open dialog for adding editing an item type
         openFreetypeDialog: function(freetype) {
@@ -60,9 +61,11 @@ function LiveblogFreetypesController(api, $location, notify, gettext,
                 if (self.editFreetype) {
                     self.dialogFreetype.name = self.editFreetype.name;
                     self.dialogFreetype.template = self.editFreetype.template;
+                    self.dialogFreetype.ampTemplate = self.editFreetype.ampTemplate;
                 } else {
                     self.dialogFreetype.name = '';
                     self.dialogFreetype.template = '';
+                    self.dialogFreetype.ampTemplate = '';
                 }
                 self.freetypeModalActive = true;
             });
@@ -70,8 +73,12 @@ function LiveblogFreetypesController(api, $location, notify, gettext,
         handleSaveError: function(data) {
             let errorMsg = gettext('Saving did not work, please try again later!');
 
-            if (data.data._issues.template) {
-                errorMsg = gettext(data.data._issues.template);
+            // if (data.data._issues.template) {
+            //     errorMsg = gettext(data.data._issues.template);
+            // }
+            if (!data.data._message.valid) {
+                errorMsg = 'Your code is not AMP compatible.' +
+                ' Check amp compatibility at "https://search.google.com/test/amp"';
             }
             notify.error(errorMsg, 10000);
         },
@@ -114,6 +121,7 @@ function LiveblogFreetypesController(api, $location, notify, gettext,
                         .save(self.editFreetype, {
                             name: self.dialogFreetype.name,
                             template: self.dialogFreetype.template,
+                            ampTemplate: self.dialogFreetype.ampTemplate,
                         })
                         .then((data) => {
                             self.dialogFreetype.loading = false;
@@ -126,7 +134,8 @@ function LiveblogFreetypesController(api, $location, notify, gettext,
                 } else {
                     api
                         .freetypes
-                        .save({name: self.dialogFreetype.name, template: self.dialogFreetype.template})
+                        .save({name: self.dialogFreetype.name, template: self.dialogFreetype.template,
+                            ampTemplate: self.dialogFreetype.ampTemplate})
                         .then((data) => {
                             self.dialogFreetype.loading = false;
                             self.freetypeModalActive = false;
