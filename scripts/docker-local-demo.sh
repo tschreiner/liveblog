@@ -2,12 +2,17 @@
 
 set -ue
 
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
 function dcs() {
 	docker-compose -p lbdemo -f ./docker-compose-prebuilt.yml $@
 }
 
 
-WORK_DIR=$(readlink -e $(dirname "$0"))
+WORK_DIR=$(realpath $(dirname "$0"))
+echo $WORK_DIR
 
 (test -d $WORK_DIR/env || virtualenv -p python2 $WORK_DIR/env )
 set +u
