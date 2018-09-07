@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 export default angular
-.module('SirTrevor', [])
+    .module('SirTrevor', [])
     .provider('SirTrevor', function() {
         this.$get = function() {
             return window.SirTrevor;
@@ -15,16 +15,16 @@ export default angular
                 get: function(block) {
                     return {
                         type: block.blockStorage.type,
-                        data: block.blockStorage.data
+                        data: block.blockStorage.data,
                     };
                 },
                 set: function(block) {
                     return {
                         type: block.type,
-                        data: block.data
+                        data: block.data,
                     };
-                }
-            }
+                },
+            },
         };
 
         this.$get = function() {
@@ -49,12 +49,13 @@ export default angular
                 return str;
             },
             scope: {
-                'editor': '=stModel',
-                'onChange': '=stChange',
-                'params': '=stParams'
+                editor: '=stModel',
+                onChange: '=stChange',
+                params: '=stParams',
             },
-            link: function (scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 var opts = angular.copy(options);
+
                 opts.blockTypes = ['Text', 'Image', 'Video', 'Embed', 'Quote'];
                 angular.extend(opts, scope.params);
                 opts.el = $(element.find('textarea'));
@@ -62,10 +63,9 @@ export default angular
                 scope.editor.get = function() {
                     var list = [];
                     // sort blocks by index.
-                    scope.editor.blocks.sort(function(a, b) {
-                        return (a.$el.index() - b.$el.index());
-                    });
-                    angular.forEach(scope.editor.blocks, function(block) {
+
+                    scope.editor.blocks.sort((a, b) => (a.$el.index() - b.$el.index()));
+                    angular.forEach(scope.editor.blocks, (block) => {
                         scope.editor.saveBlockStateToStore(block);
                         list.push(opts.transform.get(block));
                     });
@@ -73,14 +73,15 @@ export default angular
                 };
                 scope.editor.set = function(list) {
                     var item;
-                    angular.forEach(list, function(block) {
+
+                    angular.forEach(list, (block) => {
                         item = opts.transform.set(block);
                         scope.editor.createBlock(item.type, item.data);
                     });
                 };
 
                 scope.editor.clear = function() {
-                    angular.forEach(scope.editor.blocks, function(block) {
+                    angular.forEach(scope.editor.blocks, (block) => {
                         block.remove();
                     });
                     scope.editor.dataStore.data = [];
@@ -89,14 +90,14 @@ export default angular
                 element.on('keyup', scope.onChange);
 
                 // @TODO: investigate how to better `digest` out of $scope  variables.
-                //scope.$watchCollection('editor.blocks', function(blocks) {
+                // scope.$watchCollection('editor.blocks', function(blocks) {
                 //     var list = [];
                 //     _.each(blocks, function(block) {
                 //         list.push(scope.editor.get(block));
                 //     });
                 //     scope.model = list;
-                //});
-            }
+                // });
+            },
         };
 
         return directive;

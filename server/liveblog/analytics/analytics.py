@@ -8,6 +8,8 @@ from flask import make_response
 from bson import ObjectId
 import logging
 import json
+from eve.utils import config
+
 
 logger = logging.getLogger('superdesk')
 
@@ -44,6 +46,7 @@ class AnalyticsService(BaseService):
 class BlogAnalyticsResource(Resource):
     url = 'blogs/<regex("[a-f0-9]{24}"):blog_id>/bloganalytics'
     schema = analytics_schema
+    config.PAGINATION_LIMIT = 500
     datasource = {
         'source': 'analytics'
     }
@@ -93,3 +96,4 @@ def analytics_hit():
     client.update({'blog_id': ObjectId(blog_id), 'context_url': context_url}, {"$inc": {"hits": 1}}, True)
 
     return make_response('success', 200)
+

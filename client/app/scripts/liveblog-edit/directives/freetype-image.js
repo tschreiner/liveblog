@@ -1,4 +1,4 @@
-import freetypeImageTpl from 'scripts/liveblog-edit/views/freetype-image.html';
+import freetypeImageTpl from 'scripts/liveblog-edit/views/freetype-image.ng1';
 
 freetypeImage.$inject = ['$compile', 'modal', 'api', 'upload', 'superdesk', 'urls', 'notify'];
 
@@ -18,6 +18,7 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
 
             $scope.$watch('image', (value) => {
                 if (value.picture_url) {
+                    $scope.progress.width = 100;
                     $scope.preview.url = value.picture_url;
                 }
             });
@@ -25,7 +26,7 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
             $scope.valid = true;
             $scope._id = _.uniqueId('image');
             if ($scope.compulsory !== undefined) {
-                var sentinel = $scope.$watch('[image,compulsory]', (value) => {
+                const sentinel = $scope.$watch('[image,compulsory]', (value) => {
                     $scope.compulsoryFlag = value[0].picture_url === '' && value[1] === '';
                 }, true);
 
@@ -57,7 +58,7 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
                 return urls.resource('archive').then((uploadUrl) => upload.start({
                     method: 'POST',
                     url: uploadUrl,
-                    data: form
+                    data: form,
                 })
                     .then((response) => {
                         if (response.data._status === 'ERR') {
@@ -79,7 +80,7 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
                     }));
             };
 
-            this.removeImage = function() {
+            $scope.removeImage = function() {
                 modal
                     .confirm(gettext('Are you sure you want to remove the image?'))
                     .then(() => {
@@ -95,7 +96,7 @@ export default function freetypeImage($compile, modal, api, upload, superdesk, u
             image: '=',
             // `compulsory` indicates a variable that is needed if the current value is empty.
             compulsory: '=',
-            validation: '='
-        }
+            validation: '=',
+        },
     };
 }
